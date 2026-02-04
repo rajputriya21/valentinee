@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Valentine 💖</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+margin: 0;
+height: 100vh;
+background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+display: flex;
+justify-content: center;
+align-items: center;
+font-family: Arial, sans-serif;
+overflow: hidden;
+}
+
+.card {
+background: white;
+padding: 30px;
+border-radius: 20px;
+text-align: center;
+box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+width: 90%;
+max-width: 350px;
+position: relative;
+}
+
+h1 {
+color: #ff4d6d;
+margin-bottom: 20px;
+}
+
+input {
+padding: 12px;
+width: 90%;
+border-radius: 20px;
+border: 1px solid #ccc;
+font-size: 16px;
+text-align: center;
+margin-bottom: 15px;
+}
+
+button {
+padding: 12px 25px;
+font-size: 16px;
+border: none;
+border-radius: 25px;
+cursor: pointer;
+}
+
+.yes {
+background: #ff4d6d;
+color: white;
+}
+
+.no {
+background: #ddd;
+position: absolute;
+left: 20px;
+top: 120px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card" id="inputCard">
+<h1>Enter your crush's name 💕</h1>
+<input type="text" id="crushName" placeholder="Crush name">
+<button class="yes" onclick="createLink()">Create Valentine 💖</button>
+</div>
+
+<script>
+// Check if name already exists in URL
+const params = new URLSearchParams(window.location.search);
+const crush = params.get("name");
+
+// If link already has crush name → show Valentine page directly
+if(crush){
+showValentine(crush);
+}
+
+function createLink(){
+const name = document.getElementById("crushName").value.trim();
+if(name === ""){
+alert("Please enter your crush's name 😅");
+return;
+}
+
+// Create sharable Valentine link
+const link = window.location.origin + window.location.pathname + "?name=" + encodeURIComponent(name);
+
+document.getElementById("inputCard").innerHTML = `
+<h1>💌 Valentine page ready!</h1>
+<p>Send this link to your crush 😏</p>
+<input value="${link}" style="width:100%; padding:10px; border-radius:10px;" readonly>
+<p style="margin-top:10px;">💖 Copy & send</p>
+`;
+}
+
+function showValentine(name){
+document.body.innerHTML = `
+<div class="card">
+<h1>${name}, will you be my Valentine? 💖</h1>
+<button class="yes" onclick="yesClick('${name}')">Yes 💕</button>
+<button class="no" id="noBtn">No 🙈</button>
+</div>
+`;
+
+const noBtn = document.getElementById("noBtn");
+const card = document.querySelector(".card");
+
+function randomMove(){
+const maxX = card.clientWidth - noBtn.offsetWidth;
+const maxY = card.clientHeight - noBtn.offsetHeight;
+noBtn.style.left = Math.random()*maxX + "px";
+noBtn.style.top = Math.random()*maxY + "px";
+}
+setInterval(randomMove, 700);
+}
+
+function yesClick(name){
+document.body.innerHTML = `
+<div style="
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+height:100vh;
+background:#ff4d6d;
+color:white;
+text-align:center;
+padding:20px;
+">
+<h1>Yayyy ${name}! 💖🥰</h1>
+<img src="https://media.giphy.com/media/3oriO0OEd9QIDdllqo/giphy.gif"
+style="width:250px; margin-top:20px; border-radius:20px;">
+</div>`;
+}
+</script>
+
+</body>
+</html>
